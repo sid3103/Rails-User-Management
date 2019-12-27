@@ -1,0 +1,83 @@
+FROM openjdk:8-jre
+
+WORKDIR /usr/src/scorpio
+
+ARG PROJECT_VERSION=0.0.1-SNAPSHOT
+ARG BUILD_DIR_ACS=Core/AtContextServer
+ARG BUILD_DIR_SCS=SpringCloudModules/config-server
+ARG BUILD_DIR_SES=SpringCloudModules/eureka
+ARG BUILD_DIR_SGW=SpringCloudModules/gateway
+ARG BUILD_DIR_HMG=History/HistoryManager
+ARG BUILD_DIR_QMG=Core/QueryManager
+ARG BUILD_DIR_RMG=Registry/RegistryManager
+ARG BUILD_DIR_EMG=Core/EntityManager
+ARG BUILD_DIR_STRMG=Storage/StorageManager
+ARG BUILD_DIR_SUBMG=Core/SubscriptionManager
+ARG JAR_FILE_BUILD_ACS=AtContextServer-${PROJECT_VERSION}.jar
+ARG JAR_FILE_BUILD_SCS=config-server-${PROJECT_VERSION}.jar
+ARG JAR_FILE_BUILD_SES=eureka-server-${PROJECT_VERSION}.jar
+ARG JAR_FILE_BUILD_SGW=gateway-${PROJECT_VERSION}.jar
+ARG JAR_FILE_BUILD_HMG=HistoryManager-${PROJECT_VERSION}.jar
+ARG JAR_FILE_BUILD_QMG=QueryManager-${PROJECT_VERSION}.jar
+ARG JAR_FILE_BUILD_RMG=RegistryManager-${PROJECT_VERSION}.jar
+ARG JAR_FILE_BUILD_EMG=EntityManager-${PROJECT_VERSION}.jar
+ARG JAR_FILE_BUILD_STRMG=StorageManager-${PROJECT_VERSION}.jar
+ARG JAR_FILE_BUILD_SUBMG=SubscriptionManager-${PROJECT_VERSION}.jar
+ARG JAR_FILE_RUN_ACS=AtContextServer.jar
+ARG JAR_FILE_RUN_SCS=config-server.jar
+ARG JAR_FILE_RUN_SES=eureka-server.jar
+ARG JAR_FILE_RUN_SGW=gateway.jar
+ARG JAR_FILE_RUN_HMG=HistoryManager.jar
+ARG JAR_FILE_RUN_QMG=QueryManager.jar
+ARG JAR_FILE_RUN_RMG=RegistryManager.jar
+ARG JAR_FILE_RUN_EMG=EntityManager.jar
+ARG JAR_FILE_RUN_STRMG=StorageManager.jar
+ARG JAR_FILE_RUN_SUBMG=SubscriptionManager.jar
+
+COPY ${BUILD_DIR_SES}/target/${JAR_FILE_BUILD_SES} ./ses/${JAR_FILE_RUN_SES}
+COPY ${BUILD_DIR_SCS}/target/${JAR_FILE_BUILD_SCS} ./scs/${JAR_FILE_RUN_SCS}
+COPY ${BUILD_DIR_SGW}/target/${JAR_FILE_BUILD_SGW} ./sgw/${JAR_FILE_RUN_SGW}
+COPY ${BUILD_DIR_ACS}/target/${JAR_FILE_BUILD_ACS} ./acs/${JAR_FILE_RUN_ACS}
+COPY ${BUILD_DIR_HMG}/target/${JAR_FILE_BUILD_HMG} ./hmg/${JAR_FILE_RUN_HMG}
+COPY ${BUILD_DIR_QMG}/target/${JAR_FILE_BUILD_QMG} ./qmg/${JAR_FILE_RUN_QMG}
+COPY ${BUILD_DIR_RMG}/target/${JAR_FILE_BUILD_RMG} ./rmg/${JAR_FILE_RUN_RMG}
+COPY ${BUILD_DIR_EMG}/target/${JAR_FILE_BUILD_EMG} ./emg/${JAR_FILE_RUN_EMG}
+COPY ${BUILD_DIR_STRMG}/target/${JAR_FILE_BUILD_STRMG} ./strmg/${JAR_FILE_RUN_STRMG}
+COPY ${BUILD_DIR_SUBMG}/target/${JAR_FILE_BUILD_SUBMG} ./submg/${JAR_FILE_RUN_SUBMG}
+
+
+COPY ${BUILD_DIR_SES}/src/main/resources/application-aaio.yml ./ses/config/application.yml
+COPY ${BUILD_DIR_SCS}/src/main/resources/application-aaio.yml ./scs/config/application.yml
+COPY ${BUILD_DIR_SGW}/src/main/resources/application-aaio.yml ./sgw/config/application.yml
+COPY ${BUILD_DIR_ACS}/src/main/resources/application-aaio.yml ./acs/config/application.yml
+COPY ${BUILD_DIR_HMG}/src/main/resources/application-aaio.yml ./hmg/config/application.yml
+COPY ${BUILD_DIR_QMG}/src/main/resources/application-aaio.yml ./qmg/config/application.yml
+COPY ${BUILD_DIR_RMG}/src/main/resources/application-aaio.yml ./rmg/config/application.yml
+COPY ${BUILD_DIR_EMG}/src/main/resources/application-aaio.yml ./emg/config/application.yml
+COPY ${BUILD_DIR_STRMG}/src/main/resources/application-aaio.yml ./strmg/config/application.yml
+COPY ${BUILD_DIR_SUBMG}/src/main/resources/application-aaio.yml ./submg/config/application.yml
+
+ENV sesdir ses
+ENV sesjar ${JAR_FILE_RUN_SES}
+ENV scsdir scs
+ENV scsjar ${JAR_FILE_RUN_SCS}
+ENV sgwdir sgw
+ENV sgwjar ${JAR_FILE_RUN_SGW}
+ENV acsdir acs
+ENV acsjar ${JAR_FILE_RUN_ACS}
+ENV hmgdir hmg
+ENV hmgjar ${JAR_FILE_RUN_HMG}
+ENV qmgdir qmg
+ENV qmgjar ${JAR_FILE_RUN_QMG}
+ENV rmgdir rmg
+ENV rmgjar ${JAR_FILE_RUN_RMG}
+ENV emgdir emg
+ENV emgjar ${JAR_FILE_RUN_EMG}
+ENV strmgdir strmg
+ENV strmgjar ${JAR_FILE_RUN_STRMG}
+ENV submgdir submg
+ENV submgjar ${JAR_FILE_RUN_SUBMG}
+
+COPY run.sh ./
+
+CMD bash ./run.sh
